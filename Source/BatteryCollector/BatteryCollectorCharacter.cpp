@@ -177,8 +177,15 @@ void ABatteryCollectorCharacter::CollectPickups() {
 			ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
 			if (TestBattery)
 			{
-				// Increase the collected power
-				CollectedPower += TestBattery->GetPower();
+				if (TestBattery->GetBadBattery())
+					// Decrease the collected power
+					CollectedPower -= TestBattery->GetPower();
+				else
+				{
+					// Increase the collected power
+					CollectedPower += TestBattery->GetPower();
+				}
+
 
 			}
 			// Deactivate the pickup 
@@ -186,7 +193,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 		}
 
 	}
-	if (CollectedPower > 0)
+	if (CollectedPower != 0)
 	{
 		UpdatePower(CollectedPower);
 	}
